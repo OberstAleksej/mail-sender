@@ -1,0 +1,27 @@
+{
+	"info": {
+		"_postman_id": "a1a9e4b1-fdc3-495c-befc-6ed6ea1cb614",
+		"name": "Mail sender services",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "1957990",
+		"_collection_link": "https://bold-comet-822554.postman.co/workspace/test~84066411-c5b9-4302-ac9e-dc33a1a138b7/collection/1957990-a1a9e4b1-fdc3-495c-befc-6ed6ea1cb614?action=share&source=collection_link&creator=1957990"
+	},
+	"item": [
+		{
+			"name": "Get message status",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Create new message",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

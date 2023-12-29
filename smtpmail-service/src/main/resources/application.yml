@@ -1,0 +1,30 @@
+server:
+  port: 8083
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    username: guest
+    password: guest
+    port: 15672
+    queue:
+      core: core
+    exchange:
+      core: core
+      smtp: mail
+    routingkey:
+      core: core
+      smtp: mail
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: #todo
+    password: #tood
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    test-connection: false

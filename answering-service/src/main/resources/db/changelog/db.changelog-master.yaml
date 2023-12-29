@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - property:
+      name: now
+      value: current_timestamp
+      dbms: postgresql
+  - property:
+      name: floatType
+      value: float4
+      dbms: postgresql, h2
+  - property:
+      name: datetimeType
+      value: datetime
+      dbms: oracle, mssql, postgresql, h2
+  - property:
+      name: uuidType
+      value: uuid
+      dbms: h2, postgresql
+  - include:
+      file: classpath:/db/changelog/changes/00000000000000_initial_schema.xml
