@@ -1,0 +1,187 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+	  "title": "OpenAPI definition",
+	  "version": "v0"
+	},
+	"servers": [
+	  {
+		"url": "http://localhost:8081",
+		"description": "Generated server url"
+	  }
+	],
+	"paths": {
+	  "/api/messages": {
+		"post": {
+		  "tags": [
+			"message-resource"
+		  ],
+		  "operationId": "createMessage",
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"schema": {
+				  "$ref": "#/components/schemas/MessageRequestDTO"
+				}
+			  }
+			},
+			"required": true
+		  },
+		  "responses": {
+			"200": {
+			  "description": "OK",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/MessageRequestDTO"
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  "/api/messages/{uniqueMessage}": {
+		"get": {
+		  "tags": [
+			"message-resource"
+		  ],
+		  "operationId": "getMessage",
+		  "parameters": [
+			{
+			  "name": "uniqueMessage",
+			  "in": "path",
+			  "required": true,
+			  "schema": {
+				"type": "string"
+			  }
+			}
+		  ],
+		  "responses": {
+			"200": {
+			  "description": "OK",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/MessageDTO"
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	},
+	"components": {
+	  "schemas": {
+		"MessageRequestDTO": {
+		  "type": "object",
+		  "properties": {
+			"uniqueMessage": {
+			  "type": "string"
+			},
+			"groupUsers": {
+			  "type": "integer",
+			  "format": "int64"
+			},
+			"templateId": {
+			  "type": "integer",
+			  "format": "int64"
+			},
+			"file": {
+			  "type": "string"
+			},
+			"typeFile": {
+			  "type": "string",
+			  "enum": [
+				"PDF",
+				"PNG"
+			  ]
+			},
+			"tags": {
+			  "uniqueItems": true,
+			  "type": "array",
+			  "items": {
+				"$ref": "#/components/schemas/TagDTO"
+			  }
+			},
+			"messageStatus": {
+			  "type": "string",
+			  "enum": [
+				"NEW",
+				"DELIVERED",
+				"READY_FOR_DELIVERY",
+				"ERROR"
+			  ]
+			}
+		  }
+		},
+		"TagDTO": {
+		  "type": "object",
+		  "properties": {
+			"name": {
+			  "type": "string"
+			},
+			"replaceText": {
+			  "type": "string"
+			}
+		  }
+		},
+		"MessageDTO": {
+		  "type": "object",
+		  "properties": {
+			"uniqueMessage": {
+			  "type": "string"
+			},
+			"groupUsers": {
+			  "type": "integer",
+			  "format": "int64"
+			},
+			"templateId": {
+			  "type": "string"
+			},
+			"file": {
+			  "type": "string"
+			},
+			"typeFile": {
+			  "type": "string",
+			  "enum": [
+				"PDF",
+				"PNG"
+			  ]
+			},
+			"tags": {
+			  "uniqueItems": true,
+			  "type": "array",
+			  "items": {
+				"$ref": "#/components/schemas/TagDTO"
+			  }
+			},
+			"messageText": {
+			  "type": "string"
+			},
+			"date": {
+			  "type": "string",
+			  "format": "date-time"
+			},
+			"status": {
+			  "type": "string",
+			  "enum": [
+				"NEW",
+				"DELIVERED",
+				"READY_FOR_DELIVERY",
+				"ERROR"
+			  ]
+			},
+			"dateStatus": {
+			  "type": "string",
+			  "format": "date-time"
+			},
+			"errors": {
+			  "type": "string"
+			}
+		  }
+		}
+	  }
+	}
+  }
