@@ -1,0 +1,30 @@
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 15672
+    username: guest
+    password: guest
+    queue:
+      answering: answering
+      smtp: mail
+    exchange:
+      core: core
+      answering: answering
+      smtp: mail
+    routingkey:
+      core: core
+      answering: answering
+      smtp: mail
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/mail_sender
+    username: aleksey
+    password: aleksey
+    hikari:
+      connection-timeout: 40000
+      idle-timeout: 600000
+      maxLifetime: 1200000
+      auto-commit: true
+      minimum-idle: 10
+server:
+  port: 8082

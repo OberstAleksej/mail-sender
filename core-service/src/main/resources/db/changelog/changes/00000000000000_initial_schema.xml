@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+  <changeSet id="00000000000000" author="ivanovski">
+    <createSequence sequenceName="sequence_generator" startValue="1050" incrementBy="50"/>
+  </changeSet>
+
+  <!--
+     Added the entity Template.
+ -->
+  <changeSet id="00000000000001" author="ivanovski">
+    <createTable tableName="template">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="body" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="00000000000001-data" author="ivanovski" context="faker">
+    <loadData
+      file="db/changelog/fake-data/template.csv"
+      separator=";"
+      tableName="template">
+      <column name="id" type="numeric"/>
+      <column name="body" type="string"/>
+    </loadData>
+  </changeSet>
+
+  <!--
+     Added the entity Tag.
+ -->
+  <changeSet id="00000000000002" author="ivanovski">
+    <createTable tableName="tag">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="replace_text" type="varchar(255)">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="00000000000002-data" author="ivanovski" context="faker">
+    <loadData
+      file="db/changelog/fake-data/tag.csv"
+      separator=";"
+      tableName="tag">
+      <column name="id" type="numeric"/>
+      <column name="name" type="string"/>
+      <column name="replace_text" type="string"/>
+    </loadData>
+  </changeSet>
+
+  <!--
+    Added the entity Message.
+-->
+  <changeSet id="00000000000003" author="ivanovski">
+    <createTable tableName="message">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="unique_message" type="varchar(255)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="group_users" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="file" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="type_file" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="message_text" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="date" type="${datetimeType}">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="date_status" type="${datetimeType}">
+        <constraints nullable="true"/>
+      </column>
+      <column name="errors" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="template_id" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <dropDefaultValue tableName="message" columnName="date" columnDataType="${datetimeType}"/>
+    <dropDefaultValue tableName="message" columnName="date_status" columnDataType="${datetimeType}"/>
+  </changeSet>
+
+  <changeSet id="00000000000003-relations" author="ivanovski">
+    <createTable tableName="rel_message__tag">
+      <column name="tag_id" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="message_id" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addPrimaryKey columnNames="message_id, tag_id" tableName="rel_message__tag"/>
+  </changeSet>
+
+  <changeSet id="00000000000003-data" author="ivanovski" context="faker">
+    <loadData
+      file="db/changelog/fake-data/message.csv"
+      separator=";"
+      tableName="message">
+      <column name="id" type="numeric"/>
+      <column name="unique_message" type="string"/>
+      <column name="group_users" type="numeric"/>
+      <column name="file" type="string"/>
+      <column name="type_file" type="string"/>
+      <column name="message_text" type="string"/>
+      <column name="date" type="${datetimeType}"/>
+      <column name="status" type="string"/>
+      <column name="date_status" type="${datetimeType}"/>
+      <column name="errors" type="string"/>
+      <column name="template_id" type="numeric"/>
+    </loadData>
+  </changeSet>
+
+
+  <changeSet id="00000000000004" author="ivanovski">
+    <addForeignKeyConstraint baseColumnNames="message_id"
+      baseTableName="rel_message__tag"
+      constraintName="fk_rel_message__tag__message_id"
+      referencedColumnNames="id"
+      referencedTableName="message"/>
+
+    <addForeignKeyConstraint baseColumnNames="tag_id"
+      baseTableName="rel_message__tag"
+      constraintName="fk_rel_message__tag__tag_id"
+      referencedColumnNames="id"
+      referencedTableName="tag"/>
+
+    <addForeignKeyConstraint baseColumnNames="template_id"
+      baseTableName="message"
+      constraintName="fk_message__template_id"
+      referencedColumnNames="id"
+      referencedTableName="template"/>
+  </changeSet>
+
+  <!--
+      Added the entity MessageSendingHistory.
+  -->
+  <changeSet id="00000000000005" author="ivanovski">
+    <createTable tableName="message_sending_history">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="unique_message" type="varchar(255)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="email" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="sending_status" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="00000000000005-data" author="ivanovski" context="faker">
+    <loadData
+      file="db/changelog/fake-data/message_sending_history.csv"
+      separator=";"
+      tableName="message_sending_history">
+      <column name="id" type="numeric"/>
+      <column name="unique_message" type="string"/>
+      <column name="user_id" type="numeric"/>
+      <column name="sending_status" type="string"/>
+    </loadData>
+  </changeSet>
+
+  <changeSet id="00000000000006" author="ivanovski">
+    <createTable tableName="register_user">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="email" type="varchar(255)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="group_users" type="bigint">
+        <constraints nullable="true"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="00000000000006-data" author="ivanovski" context="faker">
+    <loadData
+      file="db/changelog/fake-data/user.csv"
+      separator=";"
+      tableName="register_user">
+      <column name="id" type="numeric"/>
+      <column name="name" type="string"/>
+      <column name="email" type="string"/>
+      <column name="group_users" type="numeric"/>
+    </loadData>
+  </changeSet>
+</databaseChangeLog>
